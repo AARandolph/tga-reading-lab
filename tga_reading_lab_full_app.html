@@ -1,0 +1,716 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;color:var(--color-text-primary);background:transparent}
+:root{
+  --p:#7F77DD;--plt:#EEEDFE;--pdk:#3C3489;
+  --t:#1D9E75;--tlt:#E1F5EE;--tdk:#085041;
+  --c:#D85A30;--clt:#FAECE7;--cdk:#712B13;
+  --a:#EF9F27;--alt:#FAEEDA;--adk:#633806;
+  --g:#639922;--glt:#EAF3DE;--gdk:#27500A;
+  --r:#E24B4A;--rlt:#FCEBEB;--rdk:#791F1F;
+  --pu:#7F77DD;--gry:#888780;
+}
+.app{max-width:700px;margin:0 auto;padding:0.5rem 0}
+.screen{display:none}.screen.active{display:block}
+
+/* SHARED */
+.brand-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--p);border-radius:14px;margin-bottom:1rem}
+.brand-logo{font-family:'Fredoka One',cursive;font-size:17px;color:#fff;display:flex;align-items:center;gap:8px}
+.logo-mark{width:26px;height:26px;background:var(--alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--pdk);font-family:'Fredoka One',cursive}
+.back-pill{background:rgba(255,255,255,0.2);border:none;border-radius:20px;padding:5px 12px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#fff;cursor:pointer}
+.back-pill:hover{background:rgba(255,255,255,0.3)}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:14px;padding:1.125rem;margin-bottom:1rem}
+.btn{font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:9px 18px;border-radius:10px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-primary)}
+.btn:hover{background:var(--color-background-secondary)}
+.btn.primary{background:var(--p);border-color:var(--p);color:#fff}.btn.primary:hover{background:var(--pdk)}
+.btn.success{background:var(--g);border-color:var(--g);color:#fff}.btn.success:hover{background:var(--gdk)}
+.btn.teal{background:var(--t);border-color:var(--t);color:#fff}.btn.teal:hover{background:var(--tdk)}
+.sec-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-secondary);margin-bottom:8px}
+.pill{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px}
+.pill-green{background:var(--glt);color:var(--gdk)}.pill-amber{background:var(--alt);color:var(--adk)}
+.pill-red{background:var(--rlt);color:var(--rdk)}.pill-purple{background:var(--plt);color:var(--pdk)}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;flex-shrink:0}
+.av-p{background:var(--plt);color:var(--pdk)}.av-t{background:var(--tlt);color:var(--tdk)}
+.av-c{background:var(--clt);color:var(--cdk)}.av-a{background:var(--alt);color:var(--adk)}
+.tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px}
+.tag-green{background:var(--glt);color:var(--gdk)}.tag-amber{background:var(--alt);color:var(--adk)}
+.tag-red{background:var(--rlt);color:var(--rdk)}.tag-purple{background:var(--plt);color:var(--pdk)}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:1rem}
+.metric{background:var(--color-background-secondary);border-radius:10px;padding:10px 12px}
+.mval{font-size:20px;font-weight:900;margin-bottom:1px}
+.mlbl{font-size:11px;font-weight:700;color:var(--color-text-secondary)}
+.fbbar{border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;display:none;margin-bottom:10px}
+.fbbar.show{display:block}
+.fbbar.ok{background:var(--glt);color:var(--gdk);border:0.5px solid #97C459}
+.fbbar.no{background:var(--rlt);color:var(--rdk);border:0.5px solid #F09595}
+.fbbar.info{background:var(--plt);color:var(--pdk);border:0.5px solid #AFA9EC}
+
+/* DASHBOARD */
+.module-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:1rem}
+.mod-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.mod-card:hover{border-color:var(--p);background:var(--plt)}
+.mod-card.active{border:2px solid var(--p);background:var(--plt)}
+.mod-emoji{font-size:20px;margin-bottom:4px}
+.mod-name{font-size:10px;font-weight:800;color:var(--color-text-primary);line-height:1.2}
+.mod-id{font-size:9px;font-weight:700;color:var(--pdk);background:var(--plt);padding:1px 5px;border-radius:5px;margin-top:3px;display:inline-block}
+.mod-card.active .mod-id{background:var(--p);color:#fff}
+.lesson-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);cursor:pointer}
+.lesson-item:last-child{border-bottom:none}
+.lesson-num{width:32px;height:32px;border-radius:8px;background:var(--plt);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--pdk);flex-shrink:0}
+.lesson-info{flex:1}
+.lesson-title{font-size:14px;font-weight:800;color:var(--color-text-primary)}
+.lesson-obj{font-size:11px;color:var(--color-text-secondary);font-weight:700;margin-top:1px}
+.lesson-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.stars-bar{display:flex;align-items:center;gap:8px;background:var(--alt);border-radius:12px;padding:8px 14px;margin-bottom:1rem}
+.star-sh{width:16px;height:16px;background:var(--a);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.prog-lbl{font-size:12px;font-weight:800;color:var(--color-text-primary);width:110px;flex-shrink:0}
+.prog-wrap{flex:1;height:8px;background:var(--color-background-secondary);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px}
+.fill-g{background:var(--g)}.fill-a{background:var(--a)}.fill-p{background:var(--p)}
+.prog-pct{font-size:11px;font-weight:800;width:30px;text-align:right}
+
+/* ACTIVITY */
+.act-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--pdk);background:var(--plt);display:inline-block;padding:3px 10px;border-radius:8px;margin-bottom:12px}
+.act-instr{font-size:18px;font-weight:900;color:var(--color-text-primary);margin-bottom:1rem;line-height:1.3}
+.audio-btn{display:inline-flex;align-items:center;gap:7px;background:var(--plt);border:none;border-radius:10px;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--pdk);cursor:pointer;margin-bottom:1rem}
+.audio-btn:hover{background:#CECBF6}
+.aud-ic{width:18px;height:18px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center}
+.aud-ic::after{content:'';display:block;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:7px solid #fff;margin-left:2px}
+.step-dots{display:flex;gap:5px}
+.sdot{width:10px;height:10px;border-radius:50%;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary)}
+.sdot.done{background:var(--g)}.sdot.cur{background:var(--p);border-color:var(--p)}
+.pic-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.pic-opt{border:2px solid var(--color-border-tertiary);border-radius:12px;padding:1rem;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:var(--color-background-primary)}
+.pic-opt:hover{border-color:var(--p);background:var(--plt)}
+.pic-opt.sel{border-color:var(--p);background:var(--plt)}
+.pic-opt.ok{border-color:var(--g);background:var(--glt)}
+.pic-opt.bad{border-color:var(--r);background:var(--rlt)}
+.pic-em{font-size:38px;display:block;margin-bottom:6px}
+.pic-lbl{font-size:13px;font-weight:700;color:var(--color-text-primary)}
+.sound-row{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.sbox{width:60px;height:60px;border-radius:12px;background:var(--plt);border:2px solid #AFA9EC;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:var(--pdk);cursor:pointer;transition:background .15s,transform .1s;font-family:'Fredoka One',cursive}
+.sbox:hover{background:#CECBF6;transform:scale(1.05)}
+.sbox.hit{background:var(--p);color:#fff;transform:scale(1.08)}
+.ssep{font-size:18px;color:var(--color-text-secondary);font-weight:700}
+.blend-res{font-size:26px;font-weight:900;color:var(--pdk);background:var(--plt);border-radius:12px;padding:10px 20px;font-family:'Fredoka One',cursive;letter-spacing:2px;transition:opacity .3s}
+.blend-res.hidden{opacity:.2}
+.drop-slots{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.dslot{width:54px;height:54px;border-radius:10px;border:2px dashed var(--color-border-secondary);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:var(--color-text-primary);font-family:'Fredoka One',cursive;background:var(--color-background-secondary);transition:border-color .15s}
+.dslot.filled{border-style:solid;border-color:var(--p);background:var(--plt);color:var(--pdk)}
+.dslot.oks{border-color:var(--g);background:var(--glt);color:var(--gdk)}
+.tiles{display:flex;gap:7px;flex-wrap:wrap}
+.tile{width:50px;height:50px;border-radius:10px;background:var(--alt);border:2px solid var(--a);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;color:var(--adk);cursor:pointer;transition:background .15s,transform .1s;font-family:'Fredoka One',cursive;user-select:none}
+.tile:hover{background:#FAC775;transform:scale(1.08)}
+.tile.used{opacity:.25;cursor:default;transform:none}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+.match-col-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-secondary);margin-bottom:6px}
+.mitem{border:2px solid var(--color-border-tertiary);border-radius:10px;padding:9px 12px;margin-bottom:7px;cursor:pointer;font-size:14px;font-weight:700;text-align:center;background:var(--color-background-primary);transition:border-color .15s,background .15s}
+.mitem:hover{border-color:var(--p);background:var(--plt)}
+.mitem.sel{border-color:var(--p);background:var(--plt);color:var(--pdk)}
+.mitem.matched{border-color:var(--g);background:var(--glt);color:var(--gdk)}
+.mitem.miss{border-color:var(--r);background:var(--rlt);color:var(--rdk)}
+.mem{font-size:26px;display:block;margin-bottom:3px}
+
+/* COMPLETE */
+.complete-wrap{text-align:center;padding:1.5rem}
+.big-star{font-size:52px;margin-bottom:.75rem;display:block}
+.complete-title{font-size:26px;font-weight:900;color:var(--pdk);font-family:'Fredoka One',cursive;margin-bottom:6px}
+.complete-sub{font-size:14px;color:var(--color-text-secondary);margin-bottom:1rem}
+.stars-earned{display:inline-flex;align-items:center;gap:8px;background:var(--alt);border-radius:12px;padding:10px 20px;margin-bottom:1.25rem;font-size:16px;font-weight:800;color:var(--adk)}
+
+/* DASHBOARD TOGGLE */
+.view-toggle{display:flex;background:var(--color-background-secondary);border-radius:10px;padding:3px;gap:3px;margin-bottom:1rem;border:0.5px solid var(--color-border-tertiary)}
+.vtab{flex:1;text-align:center;padding:7px 0;font-size:12px;font-weight:800;border-radius:8px;cursor:pointer;color:var(--color-text-secondary);border:none;background:transparent;font-family:'Nunito',sans-serif;transition:background .15s,color .15s}
+.vtab.active{background:var(--p);color:#fff}
+.dview{display:none}.dview.active{display:block}
+.student-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.student-row:last-child{border-bottom:none}
+.mini-bw{width:80px;height:6px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden;margin-top:3px}
+.mini-bf{height:100%;border-radius:3px}
+.assess-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px}
+.assess-row:last-child{border-bottom:none}
+.streak-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.streak-row:last-child{border-bottom:none}
+.sday{width:13px;height:13px;border-radius:3px}
+.sday.on{background:var(--p)}.sday.off{background:var(--color-background-secondary)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.grp-card{background:var(--color-background-secondary);border-radius:12px;padding:12px}
+.chip{font-size:11px;font-weight:800;padding:3px 8px;border-radius:7px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);margin:2px}
+
+/* NAV BAR at bottom */
+.nav-bar{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.nav-btn{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;padding:6px 12px;border-radius:20px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary)}
+.nav-btn:hover{background:var(--color-background-secondary)}
+.nav-btn.active{background:var(--p);border-color:var(--p);color:#fff}
+</style>
+
+<div class="app">
+
+<div class="brand-bar">
+  <div class="brand-logo">
+    <div class="logo-mark">TG</div>
+    Trust God Academy
+    <span style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:#CECBF6">Reading Lab</span>
+  </div>
+  <div id="top-back" style="display:none">
+    <button class="back-pill" onclick="goBack()">← Back</button>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn active" id="nav-home" onclick="goHome()">Home</button>
+  <button class="nav-btn" id="nav-lesson" onclick="showSection('lessons')" style="display:none">Lesson</button>
+  <button class="nav-btn" id="nav-activity" onclick="showSection('activities')" style="display:none">Activities</button>
+  <button class="nav-btn" id="nav-dashboard" onclick="showSection('dashboard')">Dashboard</button>
+</div>
+
+<!-- ═══════════════ HOME / DASHBOARD ═══════════════ -->
+<div id="screen-home" class="screen active">
+
+  <div class="stars-bar">
+    <div class="star-sh"></div>
+    <span style="font-size:13px;font-weight:800;color:var(--adk)">My Stars</span>
+    <span style="font-size:20px;font-weight:900;color:var(--a);margin-left:auto">35</span>
+    <span style="font-size:11px;font-weight:700;color:var(--adk);background:#fff;padding:2px 8px;border-radius:8px;margin-left:8px">5 more = badge!</span>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="mval" style="color:var(--pdk)">3</div><div class="mlbl">Lessons done</div></div>
+    <div class="metric"><div class="mval" style="color:var(--tdk)">60%</div><div class="mlbl">Module progress</div></div>
+    <div class="metric"><div class="mval" style="color:var(--adk)">35</div><div class="mlbl">Stars</div></div>
+    <div class="metric"><div class="mval" style="color:var(--gdk)">4d</div><div class="mlbl">Streak</div></div>
+  </div>
+
+  <div class="sec-label">Current module</div>
+  <div class="card" style="margin-bottom:1rem">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="width:40px;height:40px;border-radius:10px;background:var(--plt);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🔤</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:800">Phonics — PH-001</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);font-weight:700">Letters to sounds · 3 of 5 skills</div>
+      </div>
+      <span class="pill pill-amber">In progress</span>
+    </div>
+    <div class="prog-row"><div class="prog-lbl">Letter sounds</div><div class="prog-wrap"><div class="prog-fill fill-g" style="width:100%"></div></div><div class="prog-pct" style="color:var(--gdk)">100%</div></div>
+    <div class="prog-row"><div class="prog-lbl">Beginning sounds</div><div class="prog-wrap"><div class="prog-fill fill-g" style="width:100%"></div></div><div class="prog-pct" style="color:var(--gdk)">100%</div></div>
+    <div class="prog-row"><div class="prog-lbl">Short vowels</div><div class="prog-wrap"><div class="prog-fill fill-a" style="width:48%"></div></div><div class="prog-pct" style="color:var(--adk)">48%</div></div>
+    <div class="prog-row"><div class="prog-lbl">Blending</div><div class="prog-wrap"><div class="prog-fill fill-a" style="width:35%"></div></div><div class="prog-pct" style="color:var(--adk)">35%</div></div>
+  </div>
+
+  <div class="sec-label">All modules</div>
+  <div class="module-grid">
+    <div class="mod-card" onclick="selectModule('PA-001',this)"><div class="mod-emoji">👂</div><div class="mod-name">Phonemic Awareness</div><div class="mod-id">PA-001</div></div>
+    <div class="mod-card active" onclick="selectModule('PH-001',this)"><div class="mod-emoji">🔤</div><div class="mod-name">Phonics</div><div class="mod-id">PH-001</div></div>
+    <div class="mod-card" onclick="selectModule('DEC-001',this)"><div class="mod-emoji">🧩</div><div class="mod-name">Decoding</div><div class="mod-id">DEC-001</div></div>
+    <div class="mod-card" onclick="selectModule('FLU-001',this)"><div class="mod-emoji">📖</div><div class="mod-name">Fluency</div><div class="mod-id">FLU-001</div></div>
+    <div class="mod-card" onclick="selectModule('COMP-001',this)"><div class="mod-emoji">💡</div><div class="mod-name">Comprehension</div><div class="mod-id">COMP-001</div></div>
+  </div>
+
+  <div class="sec-label" id="lesson-list-label">Lessons — Phonics</div>
+  <div class="card" id="lesson-list">
+    <div class="lesson-item" onclick="openLesson('PH-K-001')">
+      <div class="lesson-num">1</div>
+      <div class="lesson-info">
+        <div class="lesson-title">Short A CVC Words</div>
+        <div class="lesson-obj">Blend and read short a CVC words</div>
+        <div class="lesson-tags"><span class="tag tag-purple">🎧 Audio</span><span class="tag tag-amber">🖼 Pictures</span><span class="tag tag-green">🔁 Repeat</span></div>
+      </div>
+      <span class="pill pill-amber">Active</span>
+    </div>
+    <div class="lesson-item" onclick="openLesson('DEC-1-001')" id="dec-lesson" style="display:none">
+      <div class="lesson-num">2</div>
+      <div class="lesson-info">
+        <div class="lesson-title">Decoding CVC Words</div>
+        <div class="lesson-obj">Decode consonant-vowel-consonant words</div>
+        <div class="lesson-tags"><span class="tag tag-amber">🧩 Tiles</span><span class="tag tag-purple">🎧 Audio</span></div>
+      </div>
+      <span class="pill" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">Upcoming</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ LESSON SCREEN ═══════════════ -->
+<div id="screen-lessons" class="screen">
+  <div id="lesson-ph" style="display:none">
+    <div class="sec-label">Lesson: Short A CVC Words · PH-001</div>
+    <div class="card">
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px">What you will learn</div>
+      <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;font-weight:700">You will blend and read short a CVC words using sounds and pictures.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <span class="tag tag-purple">🎧 Audio support</span>
+        <span class="tag tag-amber">🖼 Picture cards</span>
+        <span class="tag tag-green">🔁 Repeat directions</span>
+        <span class="tag tag-purple">✏️ Word tiles</span>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:var(--color-text-secondary);margin-bottom:10px">Activities in this lesson:</div>
+      <div style="font-size:13px;font-weight:700;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)">1. Listen and choose — tap the right picture</div>
+      <div style="font-size:13px;font-weight:700;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)">2. Sound blend — tap c-a-t to make a word</div>
+      <div style="font-size:13px;font-weight:700;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)">3. Build a word — drag letters into place</div>
+      <div style="font-size:13px;font-weight:700;padding:6px 0;color:var(--color-text-primary)">4. Read and match — match words to pictures</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn primary" onclick="startActivities()">Start lesson!</button>
+    </div>
+  </div>
+  <div id="lesson-dec" style="display:none">
+    <div class="sec-label">Lesson: Decoding CVC Words · DEC-001</div>
+    <div class="card">
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px">What you will learn</div>
+      <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;font-weight:700">You will decode simple consonant-vowel-consonant words using letter tiles and audio prompts.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <span class="tag tag-amber">🧩 Letter tiles</span>
+        <span class="tag tag-purple">🎧 Audio prompts</span>
+        <span class="tag tag-green">✅ Instant feedback</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn primary" onclick="startActivities()">Start lesson!</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ACTIVITY SCREEN ═══════════════ -->
+<div id="screen-activities" class="screen">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+    <div>
+      <div style="font-size:14px;font-weight:800">Short A CVC Words</div>
+      <div style="font-size:11px;color:var(--color-text-secondary);font-weight:700">Phonics · PH-001</div>
+    </div>
+    <div class="step-dots" id="step-dots">
+      <div class="sdot cur" id="dot-0"></div>
+      <div class="sdot" id="dot-1"></div>
+      <div class="sdot" id="dot-2"></div>
+      <div class="sdot" id="dot-3"></div>
+    </div>
+  </div>
+
+  <!-- ACT 1: Listen & Choose -->
+  <div id="act-0" class="card">
+    <div class="act-label">Activity 1 of 4 — Listen and choose</div>
+    <div class="act-instr">Tap the picture that starts with the /a/ sound</div>
+    <button class="audio-btn" onclick="showFb('fb-0','info','Listen for the /a/ sound — like in apple, ant, ax!')"><span class="aud-ic"></span>Hear the sound</button>
+    <div class="pic-grid">
+      <div class="pic-opt" onclick="checkPic(this,'wrong')"><span class="pic-em">🐶</span><span class="pic-lbl">dog</span></div>
+      <div class="pic-opt" onclick="checkPic(this,'correct')"><span class="pic-em">🍎</span><span class="pic-lbl">apple</span></div>
+      <div class="pic-opt" onclick="checkPic(this,'wrong')"><span class="pic-em">🐱</span><span class="pic-lbl">cat</span></div>
+      <div class="pic-opt" onclick="checkPic(this,'wrong')"><span class="pic-em">🚂</span><span class="pic-lbl">train</span></div>
+    </div>
+    <div class="fbbar" id="fb-0"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" onclick="resetListen()">Try again</button>
+      <button class="btn primary" id="next-0" style="display:none" onclick="goAct(1)">Next activity</button>
+    </div>
+  </div>
+
+  <!-- ACT 2: Sound Blend -->
+  <div id="act-1" class="card" style="display:none">
+    <div class="act-label">Activity 2 of 4 — Sound blend</div>
+    <div class="act-instr">Tap each sound, then blend the word!</div>
+    <button class="audio-btn" onclick="showFb('fb-1','info','The word is: c... a... t... cat!')"><span class="aud-ic"></span>Hear the word</button>
+    <div class="sound-row">
+      <div class="sbox" id="sb-c" onclick="tapS('c')">c</div>
+      <span class="ssep">-</span>
+      <div class="sbox" id="sb-a" onclick="tapS('a')">a</div>
+      <span class="ssep">-</span>
+      <div class="sbox" id="sb-t" onclick="tapS('t')">t</div>
+      <span class="ssep">=</span>
+      <div class="blend-res hidden" id="blend-out">cat</div>
+    </div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem;font-weight:700">Tap all 3 sounds to reveal the word</div>
+    <div class="fbbar" id="fb-1"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" onclick="resetBlend()">Reset</button>
+      <button class="btn primary" id="next-1" style="display:none" onclick="goAct(2)">Next activity</button>
+    </div>
+  </div>
+
+  <!-- ACT 3: Build a Word -->
+  <div id="act-2" class="card" style="display:none">
+    <div class="act-label">Activity 3 of 4 — Build a word</div>
+    <div class="act-instr">Build the word: <span style="color:var(--pdk);font-family:'Fredoka One',cursive">dog</span></div>
+    <button class="audio-btn" onclick="showFb('fb-2','info','The word is: d... o... g... dog!')"><span class="aud-ic"></span>Hear the word</button>
+    <div style="font-size:13px;font-weight:700;color:var(--color-text-secondary);background:var(--color-background-secondary);padding:8px 14px;border-radius:8px;display:inline-block;margin-bottom:10px;font-family:'Fredoka One',cursive;letter-spacing:2px">d - o - g</div>
+    <div class="drop-slots" id="dslots">
+      <div class="dslot" data-pos="0"></div>
+      <div class="dslot" data-pos="1"></div>
+      <div class="dslot" data-pos="2"></div>
+    </div>
+    <div class="tiles" id="tiles">
+      <div class="tile" onclick="placeTile('d',this)">d</div>
+      <div class="tile" onclick="placeTile('o',this)">o</div>
+      <div class="tile" onclick="placeTile('g',this)">g</div>
+      <div class="tile" onclick="placeTile('b',this)">b</div>
+      <div class="tile" onclick="placeTile('p',this)">p</div>
+    </div>
+    <div class="fbbar" id="fb-2" style="margin-top:10px"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn" onclick="resetBuild()">Clear</button>
+      <button class="btn primary" onclick="checkBuild()">Check word</button>
+      <button class="btn success" id="next-2" style="display:none" onclick="goAct(3)">Next activity</button>
+    </div>
+  </div>
+
+  <!-- ACT 4: Match -->
+  <div id="act-3" class="card" style="display:none">
+    <div class="act-label">Activity 4 of 4 — Read and match</div>
+    <div class="act-instr">Match each word to the right picture</div>
+    <div class="match-grid">
+      <div>
+        <div class="match-col-title">Words</div>
+        <div class="mitem" id="mw-cat" onclick="pickMatch('word','cat')">cat</div>
+        <div class="mitem" id="mw-bat" onclick="pickMatch('word','bat')">bat</div>
+        <div class="mitem" id="mw-hat" onclick="pickMatch('word','hat')">hat</div>
+      </div>
+      <div>
+        <div class="match-col-title">Pictures</div>
+        <div class="mitem" id="mp-hat" onclick="pickMatch('pic','hat')"><span class="mem">🎩</span>hat</div>
+        <div class="mitem" id="mp-cat" onclick="pickMatch('pic','cat')"><span class="mem">🐱</span>cat</div>
+        <div class="mitem" id="mp-bat" onclick="pickMatch('pic','bat')"><span class="mem">🦇</span>bat</div>
+      </div>
+    </div>
+    <div class="fbbar" id="fb-3"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" onclick="resetMatch()">Try again</button>
+      <button class="btn success" id="finish-btn" style="display:none" onclick="showComplete()">Finish lesson!</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ COMPLETE SCREEN ═══════════════ -->
+<div id="screen-complete" class="screen">
+  <div class="complete-wrap">
+    <span class="big-star">🌟</span>
+    <div class="complete-title">Amazing job!</div>
+    <div class="complete-sub">You finished Short A CVC Words. You are a reading star!</div>
+    <div><span class="stars-earned"><div class="star-sh" style="width:18px;height:18px;background:var(--a);margin-right:4px"></div>You earned 10 stars!</span></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:1rem">
+      <button class="btn" onclick="goHome()">Back to home</button>
+      <button class="btn primary" onclick="sendPrompt('What is the next recommended lesson for a Grade 2 student who just completed Short A CVC Words in the Phonics module? Their mastered skills are letter sounds and beginning sounds. Skills needing review: short vowels and blending.')">Next lesson ↗</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DASHBOARD SCREEN ═══════════════ -->
+<div id="screen-dashboard" class="screen">
+  <div class="view-toggle">
+    <button class="vtab active" onclick="switchDash('parent',this)">Parent view</button>
+    <button class="vtab" onclick="switchDash('teacher',this)">Teacher view</button>
+  </div>
+
+  <!-- PARENT -->
+  <div id="dv-parent" class="dview active">
+    <div class="metrics">
+      <div class="metric"><div class="mval" style="color:var(--pdk)">3</div><div class="mlbl">Lessons done</div></div>
+      <div class="metric"><div class="mval" style="color:var(--tdk)">60%</div><div class="mlbl">Progress</div></div>
+      <div class="metric"><div class="mval" style="color:var(--adk)">35</div><div class="mlbl">Stars</div></div>
+      <div class="metric"><div class="mval" style="color:var(--gdk)">4d</div><div class="mlbl">Streak</div></div>
+    </div>
+    <div class="sec-label">Your child's skills</div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div class="av av-p" style="width:40px;height:40px;font-size:14px">SA</div>
+        <div><div style="font-size:14px;font-weight:800">Sample Student</div><div style="font-size:11px;color:var(--color-text-secondary);font-weight:700">Grade 2 · Phonics module</div></div>
+        <span class="pill pill-amber" style="margin-left:auto">In progress</span>
+      </div>
+      <div class="prog-row"><div class="prog-lbl">Letter sounds</div><div class="prog-wrap"><div class="prog-fill fill-g" style="width:100%"></div></div><div class="prog-pct" style="color:var(--gdk)">100%</div></div>
+      <div class="prog-row"><div class="prog-lbl">Beginning sounds</div><div class="prog-wrap"><div class="prog-fill fill-g" style="width:100%"></div></div><div class="prog-pct" style="color:var(--gdk)">100%</div></div>
+      <div class="prog-row"><div class="prog-lbl">Short vowels</div><div class="prog-wrap"><div class="prog-fill fill-a" style="width:48%"></div></div><div class="prog-pct" style="color:var(--adk)">48%</div></div>
+      <div class="prog-row"><div class="prog-lbl">Blending</div><div class="prog-wrap"><div class="prog-fill fill-a" style="width:35%"></div></div><div class="prog-pct" style="color:var(--adk)">35%</div></div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary);margin-top:4px">
+        <span class="tag tag-green">Mastered: letter sounds</span>
+        <span class="tag tag-green">Mastered: beginning sounds</span>
+        <span class="tag tag-amber">Review: short vowels</span>
+        <span class="tag tag-amber">Review: blending</span>
+      </div>
+    </div>
+    <div class="sec-label">Time spent this week</div>
+    <div class="card">
+      <div id="time-bars"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:.5rem">
+      <button class="btn primary" onclick="sendPrompt('Give me 3 specific home activities for a Grade 2 child who needs practice with short vowels and blending.')">Home tips ↗</button>
+      <button class="btn" onclick="sendPrompt('Write a short progress summary for Sample Student in Grade 2 to share with their teacher.')">Share with teacher ↗</button>
+    </div>
+  </div>
+
+  <!-- TEACHER -->
+  <div id="dv-teacher" class="dview">
+    <div class="metrics">
+      <div class="metric"><div class="mval" style="color:var(--pdk)">18</div><div class="mlbl">Students</div></div>
+      <div class="metric"><div class="mval" style="color:var(--tdk)">12</div><div class="mlbl">On track</div></div>
+      <div class="metric"><div class="mval" style="color:var(--adk)">4</div><div class="mlbl">Need support</div></div>
+      <div class="metric"><div class="mval" style="color:var(--cdk)">2</div><div class="mlbl">Intervention</div></div>
+    </div>
+    <div class="sec-label">Class roster</div>
+    <div class="card">
+      <div class="student-row">
+        <div class="av av-p" style="width:34px;height:34px;font-size:12px">SA</div>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800">Sample A.</div><div style="font-size:11px;color:var(--color-text-secondary);font-weight:700">Gr 2 · Phonics</div><div class="mini-bw"><div class="mini-bf fill-a" style="width:60%"></div></div></div>
+        <span class="pill pill-amber">In progress</span>
+      </div>
+      <div class="student-row">
+        <div class="av av-t" style="width:34px;height:34px;font-size:12px">MJ</div>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800">Marcus J.</div><div style="font-size:11px;color:var(--color-text-secondary);font-weight:700">Gr 2 · Decoding</div><div class="mini-bw"><div class="mini-bf fill-g" style="width:85%"></div></div></div>
+        <span class="pill pill-green">On track</span>
+      </div>
+      <div class="student-row">
+        <div class="av av-c" style="width:34px;height:34px;font-size:12px">ZW</div>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800">Zoe W.</div><div style="font-size:11px;color:var(--color-text-secondary);font-weight:700">Gr 1 · Phonemic</div><div class="mini-bw"><div class="mini-bf" style="width:22%;background:var(--c)"></div></div></div>
+        <span class="pill pill-red">Intervention</span>
+      </div>
+      <div class="student-row">
+        <div class="av av-a" style="width:34px;height:34px;font-size:12px">DL</div>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800">Destiny L.</div><div style="font-size:11px;color:var(--color-text-secondary);font-weight:700">Gr 3 · Fluency</div><div class="mini-bw"><div class="mini-bf fill-g" style="width:91%"></div></div></div>
+        <span class="pill pill-green">On track</span>
+      </div>
+    </div>
+    <div class="sec-label">Intervention groups</div>
+    <div class="two-col">
+      <div class="grp-card">
+        <div style="font-size:12px;font-weight:800;color:var(--cdk);margin-bottom:6px">Tier 3 — intensive</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);font-weight:700;margin-bottom:6px">Below 40% · 2 students</div>
+        <span class="chip">Zoe W.</span><span class="chip">Eli T.</span>
+      </div>
+      <div class="grp-card">
+        <div style="font-size:12px;font-weight:800;color:var(--adk);margin-bottom:6px">Tier 2 — targeted</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);font-weight:700;margin-bottom:6px">40–70% · 4 students</div>
+        <span class="chip">Sample A.</span><span class="chip">Nia P.</span><span class="chip">James R.</span><span class="chip">Cora M.</span>
+      </div>
+    </div>
+    <div class="sec-label">Assessment results</div>
+    <div class="card">
+      <div class="assess-row"><div class="av av-t" style="width:28px;height:28px;font-size:10px">MJ</div><span style="flex:1;font-weight:800;font-size:13px">Marcus J.</span><span style="font-size:11px;color:var(--color-text-secondary);font-weight:700;width:70px">Decoding</span><span style="font-size:15px;font-weight:900;width:38px;text-align:center;color:var(--gdk)">92%</span><span class="pill pill-green">Pass</span></div>
+      <div class="assess-row"><div class="av av-a" style="width:28px;height:28px;font-size:10px">DL</div><span style="flex:1;font-weight:800;font-size:13px">Destiny L.</span><span style="font-size:11px;color:var(--color-text-secondary);font-weight:700;width:70px">Fluency</span><span style="font-size:15px;font-weight:900;width:38px;text-align:center;color:var(--gdk)">88%</span><span class="pill pill-green">Pass</span></div>
+      <div class="assess-row"><div class="av av-p" style="width:28px;height:28px;font-size:10px">SA</div><span style="flex:1;font-weight:800;font-size:13px">Sample A.</span><span style="font-size:11px;color:var(--color-text-secondary);font-weight:700;width:70px">Phonics</span><span style="font-size:15px;font-weight:900;width:38px;text-align:center;color:var(--adk)">74%</span><span class="pill pill-amber">Retry</span></div>
+      <div class="assess-row"><div class="av av-c" style="width:28px;height:28px;font-size:10px">ZW</div><span style="flex:1;font-weight:800;font-size:13px">Zoe W.</span><span style="font-size:11px;color:var(--color-text-secondary);font-weight:700;width:70px">Phonemic</span><span style="font-size:15px;font-weight:900;width:38px;text-align:center;color:var(--rdk)">51%</span><span class="pill pill-red">Below</span></div>
+    </div>
+    <div class="sec-label">Reading streaks</div>
+    <div class="card">
+      <div class="streak-row"><span style="flex:1;font-size:13px;font-weight:800">Marcus J.</span><div style="display:flex;gap:3px"><div class="sday on"></div><div class="sday on"></div><div class="sday on"></div><div class="sday on"></div><div class="sday on"></div></div><span style="font-size:12px;font-weight:800;color:var(--pdk);margin-left:8px">5 days</span></div>
+      <div class="streak-row"><span style="flex:1;font-size:13px;font-weight:800">Destiny L.</span><div style="display:flex;gap:3px"><div class="sday on"></div><div class="sday on"></div><div class="sday on"></div><div class="sday on"></div><div class="sday off"></div></div><span style="font-size:12px;font-weight:800;color:var(--pdk);margin-left:8px">4 days</span></div>
+      <div class="streak-row"><span style="flex:1;font-size:13px;font-weight:800">Sample A.</span><div style="display:flex;gap:3px"><div class="sday on"></div><div class="sday on"></div><div class="sday on"></div><div class="sday off"></div><div class="sday off"></div></div><span style="font-size:12px;font-weight:800;color:var(--pdk);margin-left:8px">3 days</span></div>
+      <div class="streak-row"><span style="flex:1;font-size:13px;font-weight:800">Zoe W.</span><div style="display:flex;gap:3px"><div class="sday on"></div><div class="sday off"></div><div class="sday off"></div><div class="sday off"></div><div class="sday off"></div></div><span style="font-size:12px;font-weight:800;color:var(--pdk);margin-left:8px">1 day</span></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn primary" onclick="sendPrompt('Build a targeted intervention plan for Zoe W., Grade 1, at 22% on Phonemic Awareness. Include specific activities and a 4-week schedule.')">Intervention plan ↗</button>
+      <button class="btn" onclick="sendPrompt('Generate a full class progress report for Trust God Academy Reading Lab — 18 students, Grades 1–3 — formatted for a school board or parent-teacher conference.')">Export class report ↗</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+var currentLesson='PH-K-001';
+var listenDone=false, blendTapped=[], buildWord=[], matchSel={word:null,pic:null}, matchDone=0;
+var currentAct=0;
+
+function showFb(id,type,msg){
+  var el=document.getElementById(id);
+  el.className='fbbar show '+type; el.textContent=msg;
+  if(type==='info') setTimeout(()=>{if(el.classList.contains('info'))el.className='fbbar'},2500);
+}
+function hideFb(id){document.getElementById(id).className='fbbar';}
+
+function goHome(){
+  showOnly('home');
+  document.getElementById('top-back').style.display='none';
+  setNav('home');
+}
+function showSection(s){
+  showOnly(s);
+  document.getElementById('top-back').style.display='flex';
+  setNav(s);
+}
+function showOnly(s){
+  ['home','lessons','activities','complete','dashboard'].forEach(x=>{
+    var el=document.getElementById('screen-'+x);
+    if(el) el.className='screen'+(x===s?' active':'');
+  });
+}
+function setNav(active){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  var map={home:'nav-home',lessons:'nav-lesson',activities:'nav-activity',dashboard:'nav-dashboard'};
+  var btn=document.getElementById(map[active]);
+  if(btn){btn.classList.add('active');btn.style.display='inline-block';}
+}
+function goBack(){goHome();}
+
+function selectModule(id,el){
+  document.querySelectorAll('.mod-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  var label=document.getElementById('lesson-list-label');
+  var names={'PA-001':'Phonemic Awareness','PH-001':'Phonics','DEC-001':'Decoding','FLU-001':'Fluency','COMP-001':'Comprehension'};
+  label.textContent='Lessons — '+names[id];
+  document.getElementById('dec-lesson').style.display=(id==='DEC-001')?'flex':'none';
+  var ph=document.querySelector('.lesson-item:first-child');
+  if(ph) ph.style.display=(id==='PH-001'||id==='PA-001'||id==='FLU-001'||id==='COMP-001')?'flex':'none';
+}
+
+function openLesson(id){
+  currentLesson=id;
+  resetAll();
+  document.getElementById('lesson-ph').style.display=(id==='PH-K-001')?'block':'none';
+  document.getElementById('lesson-dec').style.display=(id==='DEC-1-001')?'block':'none';
+  document.getElementById('nav-lesson').style.display='inline-block';
+  showSection('lessons');
+}
+
+function startActivities(){
+  currentAct=0;
+  document.getElementById('nav-activity').style.display='inline-block';
+  showSection('activities');
+  goAct(0);
+}
+
+function goAct(n){
+  currentAct=n;
+  for(var i=0;i<4;i++){
+    var a=document.getElementById('act-'+i);
+    if(a) a.style.display=(i===n)?'block':'none';
+    var d=document.getElementById('dot-'+i);
+    if(d) d.className='sdot'+(i<n?' done':i===n?' cur':'');
+  }
+}
+
+function checkPic(el,answer){
+  if(listenDone)return;
+  if(answer==='correct'){
+    el.classList.add('ok'); listenDone=true;
+    showFb('fb-0','ok','Yes! Apple starts with the /a/ sound. Great job!');
+    document.getElementById('next-0').style.display='inline-block';
+  } else {
+    el.classList.add('bad');
+    showFb('fb-0','no','Not quite — listen again and look for the /a/ sound!');
+    setTimeout(()=>{el.classList.remove('bad');hideFb('fb-0');},1400);
+  }
+}
+function resetListen(){
+  listenDone=false;
+  document.querySelectorAll('#act-0 .pic-opt').forEach(o=>o.className='pic-opt');
+  hideFb('fb-0'); document.getElementById('next-0').style.display='none';
+}
+
+function tapS(l){
+  if(blendTapped.indexOf(l)>-1)return;
+  blendTapped.push(l);
+  document.getElementById('sb-'+l).classList.add('hit');
+  if(blendTapped.length===3){
+    document.getElementById('blend-out').classList.remove('hidden');
+    showFb('fb-1','ok','You blended all the sounds — the word is cat!');
+    document.getElementById('next-1').style.display='inline-block';
+  } else {
+    showFb('fb-1','info','Good! Keep tapping the sounds...');
+  }
+}
+function resetBlend(){
+  blendTapped=[];
+  ['c','a','t'].forEach(l=>{var e=document.getElementById('sb-'+l);if(e)e.classList.remove('hit');});
+  document.getElementById('blend-out').classList.add('hidden');
+  hideFb('fb-1'); document.getElementById('next-1').style.display='none';
+}
+
+function placeTile(letter,el){
+  if(el.classList.contains('used'))return;
+  var slots=document.querySelectorAll('#dslots .dslot:not(.filled)');
+  if(!slots.length)return;
+  slots[0].textContent=letter; slots[0].classList.add('filled'); slots[0].dataset.letter=letter;
+  el.classList.add('used'); buildWord.push(letter);
+}
+function checkBuild(){
+  var slots=document.querySelectorAll('#dslots .dslot');
+  var formed=Array.from(slots).map(s=>s.dataset.letter||'');
+  if(formed.filter(Boolean).length<3){showFb('fb-2','info','Place all the letters first!');return;}
+  if(formed[0]==='d'&&formed[1]==='o'&&formed[2]==='g'){
+    slots.forEach(s=>s.classList.add('oks'));
+    showFb('fb-2','ok','You spelled dog! Woof!');
+    document.getElementById('next-2').style.display='inline-block';
+  } else {
+    showFb('fb-2','no','Not quite — clear it and try again!');
+  }
+}
+function resetBuild(){
+  buildWord=[];
+  document.querySelectorAll('#dslots .dslot').forEach(s=>{s.textContent='';s.className='dslot';delete s.dataset.letter;});
+  document.querySelectorAll('#tiles .tile').forEach(t=>t.classList.remove('used'));
+  hideFb('fb-2'); document.getElementById('next-2').style.display='none';
+}
+
+function pickMatch(type,val){
+  var id=(type==='word'?'mw-':'mp-')+val;
+  var el=document.getElementById(id);
+  if(!el||el.classList.contains('matched'))return;
+  document.querySelectorAll('.mitem.sel').forEach(m=>{
+    var isWord=m.id.startsWith('mw-');
+    if((isWord&&type==='word')||(!isWord&&type==='pic')) m.classList.remove('sel');
+  });
+  el.classList.add('sel'); matchSel[type]=val;
+  if(matchSel.word&&matchSel.pic){
+    var w=matchSel.word,p=matchSel.pic;
+    if(w===p){
+      document.getElementById('mw-'+w).className='mitem matched';
+      document.getElementById('mp-'+p).className='mitem matched';
+      matchDone++; matchSel={word:null,pic:null};
+      showFb('fb-3','ok',matchDone===3?'You matched all the words! Amazing!':'Match! '+w+' goes with the '+w+' picture!');
+      if(matchDone===3) document.getElementById('finish-btn').style.display='inline-block';
+    } else {
+      showFb('fb-3','no','Try again — look at each word carefully!');
+      setTimeout(()=>{
+        var we=document.getElementById('mw-'+w),pe=document.getElementById('mp-'+p);
+        if(we&&!we.classList.contains('matched'))we.classList.remove('sel');
+        if(pe&&!pe.classList.contains('matched'))pe.classList.remove('sel');
+        matchSel={word:null,pic:null}; hideFb('fb-3');
+      },1200);
+    }
+  }
+}
+function resetMatch(){
+  matchSel={word:null,pic:null}; matchDone=0;
+  document.querySelectorAll('.mitem').forEach(m=>m.className='mitem');
+  hideFb('fb-3'); document.getElementById('finish-btn').style.display='none';
+}
+
+function showComplete(){
+  document.getElementById('nav-activity').style.display='none';
+  document.getElementById('nav-lesson').style.display='none';
+  showOnly('complete');
+  document.getElementById('top-back').style.display='none';
+}
+
+function resetAll(){
+  listenDone=false; blendTapped=[]; buildWord=[]; matchSel={word:null,pic:null}; matchDone=0;
+  resetListen(); resetBlend(); resetBuild(); resetMatch();
+  document.querySelectorAll('.fbbar').forEach(f=>f.className='fbbar');
+  ['next-0','next-1','next-2','finish-btn'].forEach(id=>{var e=document.getElementById(id);if(e)e.style.display='none';});
+}
+
+function switchDash(id,btn){
+  document.querySelectorAll('.dview').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('dv-'+id).classList.add('active'); btn.classList.add('active');
+}
+
+function showSection(s){
+  showOnly(s);
+  document.getElementById('top-back').style.display='flex';
+  setNav(s);
+  if(s==='dashboard'){document.getElementById('top-back').style.display='none';}
+}
+
+var days=['Mon','Tue','Wed','Thu','Fri'],mins=[16,10,20,13,6],max=20;
+var tb=document.getElementById('time-bars');
+if(tb) days.forEach((d,i)=>{
+  tb.innerHTML+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)${i===4?';border:none':''}">
+    <span style="font-size:13px;font-weight:800;width:30px">${d}</span>
+    <div style="flex:1;height:7px;background:var(--color-background-secondary);border-radius:4px;overflow:hidden">
+      <div style="height:100%;width:${Math.round(mins[i]/max*100)}%;background:var(--p);border-radius:4px"></div>
+    </div>
+    <span style="font-size:13px;font-weight:800;color:var(--pdk);min-width:40px;text-align:right">${mins[i]} min</span>
+  </div>`;
+});
+</script>
